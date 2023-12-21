@@ -1,0 +1,144 @@
+----------where number of voter is greater than 10
+WITH StandardizedData AS (
+  SELECT 
+    LOWER(RTRIM(LTRIM(t.Residence_Address))) AS Standardized_Residence_Address,
+    LOWER(RTRIM(LTRIM(t.Formatted_Address))) AS Standardized_Formatted_Address,
+    LEFT(t.Zip_Country, CHARINDEX('-', t.Zip_Country + '-') - 1) AS Standardized_Zip_Country,
+    t.[2020 General Election(Nov/03/2020)]  AS VotedStatus
+  FROM ['All Active Voters$'] AS t
+)
+, CountByAddress AS (
+  SELECT 
+    s.Standardized_Residence_Address,
+    s.Standardized_Formatted_Address,
+    s.Standardized_Zip_Country,
+    COUNT(*) AS record_count
+  FROM StandardizedData AS s
+  GROUP BY 
+    s.Standardized_Residence_Address,
+    s.Standardized_Formatted_Address,
+    s.Standardized_Zip_Country
+  HAVING COUNT(*) > 10
+)
+SELECT cba.*, COUNT(*) AS votedIn_2020_GE
+FROM CountByAddress AS cba
+JOIN StandardizedData AS s ON
+  s.Standardized_Residence_Address = cba.Standardized_Residence_Address AND
+  s.Standardized_Formatted_Address = cba.Standardized_Formatted_Address AND
+  s.Standardized_Zip_Country = cba.Standardized_Zip_Country
+WHERE s.VotedStatus IN ('E', 'A', 'Y', 'P', 'Z', 'F', 'B')
+GROUP BY 
+  cba.Standardized_Residence_Address,
+  cba.Standardized_Formatted_Address,
+  cba.Standardized_Zip_Country,
+  cba.record_count
+HAVING COUNT(*) > 10;
+
+------for 2022 GE
+WITH StandardizedData AS (
+  SELECT 
+    LOWER(RTRIM(LTRIM(t.Residence_Address))) AS Standardized_Residence_Address,
+    LOWER(RTRIM(LTRIM(t.Formatted_Address))) AS Standardized_Formatted_Address,
+    LEFT(t.Zip_Country, CHARINDEX('-', t.Zip_Country + '-') - 1) AS Standardized_Zip_Country,
+    t.[2022 General Election(Nov/08/2022)]  AS VotedStatus
+  FROM ['All Active Voters$'] AS t
+)
+, CountByAddress AS (
+  SELECT 
+    s.Standardized_Residence_Address,
+    s.Standardized_Formatted_Address,
+    s.Standardized_Zip_Country,
+    COUNT(*) AS record_count
+  FROM StandardizedData AS s
+  GROUP BY 
+    s.Standardized_Residence_Address,
+    s.Standardized_Formatted_Address,
+    s.Standardized_Zip_Country
+  HAVING COUNT(*) > 10
+)
+SELECT cba.*, COUNT(*) AS votedIn_2022_GE
+FROM CountByAddress AS cba
+JOIN StandardizedData AS s ON
+  s.Standardized_Residence_Address = cba.Standardized_Residence_Address AND
+  s.Standardized_Formatted_Address = cba.Standardized_Formatted_Address AND
+  s.Standardized_Zip_Country = cba.Standardized_Zip_Country
+WHERE s.VotedStatus IN ('E', 'A', 'Y', 'P', 'Z', 'F', 'B')
+GROUP BY 
+  cba.Standardized_Residence_Address,
+  cba.Standardized_Formatted_Address,
+  cba.Standardized_Zip_Country,
+  cba.record_count
+HAVING COUNT(*) > 10;
+
+------For 2020 Prmary Election
+
+WITH StandardizedData AS (
+  SELECT 
+    LOWER(RTRIM(LTRIM(t.Residence_Address))) AS Standardized_Residence_Address,
+    LOWER(RTRIM(LTRIM(t.Formatted_Address))) AS Standardized_Formatted_Address,
+    LEFT(t.Zip_Country, CHARINDEX('-', t.Zip_Country + '-') - 1) AS Standardized_Zip_Country,
+    t.[2020 Primary Election(Aug/18/2020)]  AS VotedStatus
+  FROM ['All Active Voters$'] AS t
+)
+, CountByAddress AS (
+  SELECT 
+    s.Standardized_Residence_Address,
+    s.Standardized_Formatted_Address,
+    s.Standardized_Zip_Country,
+    COUNT(*) AS record_count
+  FROM StandardizedData AS s
+  GROUP BY 
+    s.Standardized_Residence_Address,
+    s.Standardized_Formatted_Address,
+    s.Standardized_Zip_Country
+  HAVING COUNT(*) > 10
+)
+SELECT cba.*, COUNT(*) AS votedIn_2020_PE
+FROM CountByAddress AS cba
+JOIN StandardizedData AS s ON
+  s.Standardized_Residence_Address = cba.Standardized_Residence_Address AND
+  s.Standardized_Formatted_Address = cba.Standardized_Formatted_Address AND
+  s.Standardized_Zip_Country = cba.Standardized_Zip_Country
+WHERE s.VotedStatus IN ('E', 'A', 'Y', 'P', 'Z', 'F', 'B')
+GROUP BY 
+  cba.Standardized_Residence_Address,
+  cba.Standardized_Formatted_Address,
+  cba.Standardized_Zip_Country,
+  cba.record_count
+HAVING COUNT(*) > 10;
+-----1 record...765 w Grant St
+-------Now let's look for 2022 PE
+WITH StandardizedData AS (
+  SELECT 
+    LOWER(RTRIM(LTRIM(t.Residence_Address))) AS Standardized_Residence_Address,
+    LOWER(RTRIM(LTRIM(t.Formatted_Address))) AS Standardized_Formatted_Address,
+    LEFT(t.Zip_Country, CHARINDEX('-', t.Zip_Country + '-') - 1) AS Standardized_Zip_Country,
+    t.[2022 Primary Election(Aug/23/2022)]  AS VotedStatus
+  FROM ['All Active Voters$'] AS t
+)
+, CountByAddress AS (
+  SELECT 
+    s.Standardized_Residence_Address,
+    s.Standardized_Formatted_Address,
+    s.Standardized_Zip_Country,
+    COUNT(*) AS record_count
+  FROM StandardizedData AS s
+  GROUP BY 
+    s.Standardized_Residence_Address,
+    s.Standardized_Formatted_Address,
+    s.Standardized_Zip_Country
+  HAVING COUNT(*) > 10
+)
+SELECT cba.*, COUNT(*) AS votedIn_2022_PE
+FROM CountByAddress AS cba
+JOIN StandardizedData AS s ON
+  s.Standardized_Residence_Address = cba.Standardized_Residence_Address AND
+  s.Standardized_Formatted_Address = cba.Standardized_Formatted_Address AND
+  s.Standardized_Zip_Country = cba.Standardized_Zip_Country
+WHERE s.VotedStatus IN ('E', 'A', 'Y', 'P', 'Z', 'F', 'B')
+GROUP BY 
+  cba.Standardized_Residence_Address,
+  cba.Standardized_Formatted_Address,
+  cba.Standardized_Zip_Country,
+  cba.record_count
+HAVING COUNT(*) > 10;
